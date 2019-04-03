@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:CoreMotionExample.xcodeproj">
+      location = "self:/Users/galdubit/gal/playground/iOS-CoreMotion-Example/TTBallSensor.xcodeproj">
    </FileRef>
 </Workspace>

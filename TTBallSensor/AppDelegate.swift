@@ -1,9 +1,8 @@
 //
 //  AppDelegate.swift
-//  CoreMotionExample
 //
-//  Created by Maxim Bilan on 1/21/16.
-//  Copyright © 2016 Maxim Bilan. All rights reserved.
+//  Based on the CoreMotion library created by Maxim Bilan on 21/01/2016.
+//  Copyright © 2019 Gal Dubitski. All rights reserved.
 //
 
 import UIKit
@@ -15,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-		// Override point for customization after application launch.
 		return true
 	}
 
