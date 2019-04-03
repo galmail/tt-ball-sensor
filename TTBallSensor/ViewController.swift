@@ -11,17 +11,19 @@ import CoreMotion
 class ViewController: UIViewController {
     
     //MARK: Properties
-    @IBOutlet weak var movementLabel: UILabel!
     @IBOutlet weak var mylabel: UILabel!
-    
+    @IBOutlet weak var movementLabel: UILabel!
+
 	let motionManager = CMMotionManager()
 	var timer: Timer!
 	
     var noise = Noise()
     var detectingMovement = false
     
-	override func viewDidLoad() {
+    override func viewDidLoad() {
 		super.viewDidLoad()
+        print("app has started!")
+        
         view.backgroundColor = UIColor.white
 		
 		motionManager.startAccelerometerUpdates()
@@ -133,6 +135,26 @@ class ViewController: UIViewController {
 	}
     
     //MARK: Actions
+    @IBAction func filterNoise(_ sender: UIButton) {
+        mylabel.text = "filtering noise..."
+
+        // start filtering noise
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            print("started noise filtering!")
+            self.timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
+        }
+
+        // finish filtering noise
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { // Change `2.0` to the desired number of seconds.
+            self.mylabel.text = "ready!"
+            print("finished noise filtering!")
+            self.timer.invalidate()
+            print("minX: ")
+            print(self.noise.accelerometerData.x.min)
+            print("maxX: ")
+            print(self.noise.accelerometerData.x.max)
+        }
+    }
     
     @IBAction func detectMotion(_ sender: UIButton) {
         mylabel.text = "detecting motion..."
@@ -147,28 +169,5 @@ class ViewController: UIViewController {
             self.detectMotion(sender)
         }
     }
-    
-    @IBAction func filterNoise(_ sender: UIButton) {
-        mylabel.text = "filtering noise..."
-        
-        // start filtering noise
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            print("started noise filtering!")
-            self.timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
-        }
-        
-        // finish filtering noise
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { // Change `2.0` to the desired number of seconds.
-            self.mylabel.text = "ready!"
-            print("finished noise filtering!")
-            self.timer.invalidate()
-            print("minX: ")
-            print(self.noise.accelerometerData.x.min)
-            print("maxX: ")
-            print(self.noise.accelerometerData.x.max)
-        }
-    }
-    
-    
-	
+
 }
