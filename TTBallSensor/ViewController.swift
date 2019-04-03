@@ -36,8 +36,7 @@ class ViewController: UIViewController {
 		
 	}
     
-    func detectMovement() -> Bool {
-        print("started detecting movement!")
+    @objc func detectMovement() -> Bool {
         var detectedMovement = false
         if let accelerometerData = motionManager.accelerometerData {
             if
@@ -48,33 +47,80 @@ class ViewController: UIViewController {
                 accelerometerData.acceleration.z < noise.accelerometerData.z.min ||
                 accelerometerData.acceleration.z > noise.accelerometerData.z.max
             {
-                movementLabel.text = "Accelerometer!"
+                print("Accelerometer detected!!")
+                print(
+                    noise.accelerometerData.x.min,
+                    noise.accelerometerData.x.max,
+                    accelerometerData.acceleration.x
+                )
+                print(
+                    noise.accelerometerData.y.min,
+                    noise.accelerometerData.y.max,
+                    accelerometerData.acceleration.y
+                )
+                print(
+                    noise.accelerometerData.z.min,
+                    noise.accelerometerData.z.max,
+                    accelerometerData.acceleration.z
+                )
+//                movementLabel.text = "Accelerometer!"
                 detectedMovement = true
             }
         }
         if let gyroData = motionManager.gyroData {
             if
-                gyroData.rotationRate.x < noise.accelerometerData.x.min ||
-                gyroData.rotationRate.x > noise.accelerometerData.x.max ||
-                gyroData.rotationRate.y < noise.accelerometerData.y.min ||
-                gyroData.rotationRate.y > noise.accelerometerData.y.max ||
-                gyroData.rotationRate.z < noise.accelerometerData.z.min ||
-                gyroData.rotationRate.z > noise.accelerometerData.z.max
+                gyroData.rotationRate.x < noise.gyroData.x.min ||
+                gyroData.rotationRate.x > noise.gyroData.x.max ||
+                gyroData.rotationRate.y < noise.gyroData.y.min ||
+                gyroData.rotationRate.y > noise.gyroData.y.max ||
+                gyroData.rotationRate.z < noise.gyroData.z.min ||
+                gyroData.rotationRate.z > noise.gyroData.z.max
             {
-                movementLabel.text = "Gyro!"
+//                movementLabel.text = "Gyro!"
+                print("Gyro detected!!")
+                print(
+                    noise.gyroData.x.min,
+                    noise.gyroData.x.max,
+                    gyroData.rotationRate.x
+                )
+                print(
+                    noise.gyroData.y.min,
+                    noise.gyroData.y.max,
+                    gyroData.rotationRate.y
+                )
+                print(
+                    noise.gyroData.z.min,
+                    noise.gyroData.z.max,
+                    gyroData.rotationRate.z
+                )
                 detectedMovement = true
             }
         }
         if let magnetometerData = motionManager.magnetometerData {
             if
                 magnetometerData.magneticField.x < noise.magnetometerData.x.min ||
-                magnetometerData.magneticField.x > noise.magnetometerData.x.max ||
-                magnetometerData.magneticField.y < noise.magnetometerData.y.min ||
-                magnetometerData.magneticField.y > noise.magnetometerData.y.max ||
-                magnetometerData.magneticField.z < noise.magnetometerData.z.min ||
+                magnetometerData.magneticField.x > noise.magnetometerData.x.max {
+                print("Magnetometer X axis detected!!")
+                print(noise.magnetometerData.x.min)
+                print(noise.magnetometerData.x.max)
+                print(magnetometerData.magneticField.x)
+                detectedMovement = true
+            }
+            if  magnetometerData.magneticField.y < noise.magnetometerData.y.min ||
+                magnetometerData.magneticField.y > noise.magnetometerData.y.max {
+                print("Magnetometer Y axis detected!!")
+                print(noise.magnetometerData.y.min)
+                print(noise.magnetometerData.y.max)
+                print(magnetometerData.magneticField.y)
+                detectedMovement = true
+            }
+            if  magnetometerData.magneticField.z < noise.magnetometerData.z.min ||
                 magnetometerData.magneticField.z > noise.magnetometerData.z.max
             {
-                movementLabel.text = "Magnetometer!"
+                print("Magnetometer Z axis detected!!")
+                print(noise.magnetometerData.z.min)
+                print(noise.magnetometerData.z.max)
+                print(magnetometerData.magneticField.z)
                 detectedMovement = true
             }
         }
@@ -136,38 +182,32 @@ class ViewController: UIViewController {
     
     //MARK: Actions
     @IBAction func filterNoise(_ sender: UIButton) {
+        
+        noise.magnetometerData.x.sensitivity = 0.65
+        noise.magnetometerData.y.sensitivity = 0.65
+        noise.magnetometerData.z.sensitivity = 0.2
+        
         mylabel.text = "filtering noise..."
 
         // start filtering noise
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             print("started noise filtering!")
-            self.timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
         }
 
         // finish filtering noise
         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { // Change `2.0` to the desired number of seconds.
-            self.mylabel.text = "ready!"
             print("finished noise filtering!")
+            self.mylabel.text = "ready!"
             self.timer.invalidate()
-            print("minX: ")
-            print(self.noise.accelerometerData.x.min)
-            print("maxX: ")
-            print(self.noise.accelerometerData.x.max)
+            self.noise.calibrateSensitivity()
         }
     }
     
     @IBAction func detectMotion(_ sender: UIButton) {
         mylabel.text = "detecting motion..."
         movementLabel.text = "listening"
-        while true {
-            if self.detectMovement() {
-                mylabel.text = "motion detected!"
-                break
-            }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.detectMotion(sender)
-        }
+        self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(ViewController.detectMovement), userInfo: nil, repeats: true)
     }
 
 }

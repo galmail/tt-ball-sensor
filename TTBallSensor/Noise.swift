@@ -15,6 +15,35 @@ class Noise {
     var gyroData = Coordinates()
     var magnetometerData = Coordinates()
     
+    @objc public func calibrateSensitivity() {
+        
+        print("noise.magnetometerData.y.sensitivity", magnetometerData.y.sensitivity)
+        
+        // calibrating accelerometer
+        accelerometerData.x.min -= accelerometerData.x.sensitivity
+        accelerometerData.x.max += accelerometerData.x.sensitivity
+        accelerometerData.y.min -= accelerometerData.y.sensitivity
+        accelerometerData.y.max += accelerometerData.y.sensitivity
+        accelerometerData.z.min -= accelerometerData.z.sensitivity
+        accelerometerData.z.max += accelerometerData.z.sensitivity
+        
+        // calibrating gyro
+        gyroData.x.min -= gyroData.x.sensitivity
+        gyroData.x.max += gyroData.x.sensitivity
+        gyroData.y.min -= gyroData.y.sensitivity
+        gyroData.y.max += gyroData.y.sensitivity
+        gyroData.z.min -= gyroData.z.sensitivity
+        gyroData.z.max += gyroData.z.sensitivity
+        
+        // calibrating magnetometer
+        magnetometerData.x.min -= magnetometerData.x.sensitivity
+        magnetometerData.x.max += magnetometerData.x.sensitivity
+        magnetometerData.y.min -= magnetometerData.y.sensitivity
+        magnetometerData.y.max += magnetometerData.y.sensitivity
+        magnetometerData.z.min -= magnetometerData.z.sensitivity
+        magnetometerData.z.max += magnetometerData.z.sensitivity
+    }
+    
     @objc public func captureMinMax(sensor: String, x: Double, y: Double, z: Double) {
         if sensor == "accelerometer" {
             self.accelerometerMinMax(x: x, y: y, z: z)
@@ -112,4 +141,5 @@ struct Coordinates {
 struct Limits {
     var min = VERY_BIG_NUMBER
     var max = VERY_SMALL_NUMBER
+    var sensitivity = 0.01
 }
