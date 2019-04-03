@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TTBallSensor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Main View Controller" id="BYZ-38-t0r" customClass="MainViewController" customModule="TTBallSensor" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -21,13 +21,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="testing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2QZ-xw-BDO" userLabel="mylabel">
-                                <rect key="frame" x="32" y="105" width="310" height="63"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Detected Movement" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7sY-en-8nD" userLabel="movementLabel">
                                 <rect key="frame" x="79" y="358" width="216" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -41,7 +34,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Detect Motion"/>
                                 <connections>
-                                    <action selector="detectMotion:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tPb-QT-n7H"/>
+                                    <action selector="detectMotion:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dv3-vi-kRC"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47q-H6-3Xl">
@@ -52,21 +45,54 @@
                                     <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
-                                    <action selector="filterNoise:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nm6-mS-arG"/>
+                                    <action selector="filterNoise:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wyL-Hj-9Iv"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xKt-Og-OHt">
+                                <rect key="frame" x="122" y="465" width="134" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="Listen for Ball"/>
+                                <connections>
+                                    <segue destination="LXa-Vi-uXP" kind="show" id="PKh-HX-Bbi"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="testing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2QZ-xw-BDO" userLabel="mylabel">
+                                <rect key="frame" x="32" y="101" width="310" height="63"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
-                        <outlet property="movementLabel" destination="7sY-en-8nD" id="NnR-fi-GMr"/>
-                        <outlet property="mylabel" destination="2QZ-xw-BDO" id="gdx-sW-XZw"/>
-                        <outlet property="view" destination="2QZ-xw-BDO" id="C2D-K8-Fq3"/>
+                        <outlet property="movementLabel" destination="7sY-en-8nD" id="M5X-7c-Zll"/>
+                        <outlet property="mylabel" destination="2QZ-xw-BDO" id="9cq-DH-OE6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="53.600000000000001" y="80.50974512743629"/>
+        </scene>
+        <!--Spectral View Controller-->
+        <scene sceneID="dU4-Xw-lJ0">
+            <objects>
+                <viewController title="Spectral View Controller" id="LXa-Vi-uXP" customClass="SpectralViewController" customModule="TTBallSensor" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HrG-3d-zNa"/>
+                        <viewControllerLayoutGuide type="bottom" id="tmu-Pv-BUT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="m6X-Ir-DSB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.55070842548364407" green="1" blue="0.57391389776494228" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dYD-tl-Fa1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="725" y="78"/>
         </scene>
     </scenes>
 </document>

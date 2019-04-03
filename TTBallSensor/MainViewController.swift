@@ -8,7 +8,7 @@
 import UIKit
 import CoreMotion
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
     //MARK: Properties
     @IBOutlet weak var mylabel: UILabel!
@@ -30,9 +30,6 @@ class ViewController: UIViewController {
 		motionManager.startGyroUpdates()
 		motionManager.startMagnetometerUpdates()
 		motionManager.startDeviceMotionUpdates()
-        
-        // 1. Create Button that when press, it will start recording the "noise" from the motion to remove false positives. It should do it for a period of 10 seconds.
-        // 2. ....
 		
 	}
     
@@ -181,18 +178,19 @@ class ViewController: UIViewController {
 	}
     
     //MARK: Actions
+    
     @IBAction func filterNoise(_ sender: UIButton) {
-        
+
         noise.magnetometerData.x.sensitivity = 0.65
         noise.magnetometerData.y.sensitivity = 0.65
         noise.magnetometerData.z.sensitivity = 0.2
-        
+
         mylabel.text = "filtering noise..."
 
         // start filtering noise
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             print("started noise filtering!")
-            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(MainViewController.update), userInfo: nil, repeats: true)
         }
 
         // finish filtering noise
@@ -203,11 +201,11 @@ class ViewController: UIViewController {
             self.noise.calibrateSensitivity()
         }
     }
-    
+
     @IBAction func detectMotion(_ sender: UIButton) {
         mylabel.text = "detecting motion..."
         movementLabel.text = "listening"
-        self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(ViewController.detectMovement), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(MainViewController.detectMovement), userInfo: nil, repeats: true)
     }
 
 }

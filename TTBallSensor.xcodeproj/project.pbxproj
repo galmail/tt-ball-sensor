@@ -8,22 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		6D4BABE01C5130A60042ADA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4BABDF1C5130A60042ADA0 /* AppDelegate.swift */; };
-		6D4BABE21C5130A60042ADA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4BABE11C5130A60042ADA0 /* ViewController.swift */; };
+		6D4BABE21C5130A60042ADA0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4BABE11C5130A60042ADA0 /* MainViewController.swift */; };
 		6D4BABE71C5130A60042ADA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D4BABE61C5130A60042ADA0 /* Assets.xcassets */; };
 		7276E6B8224E3D9400DEA117 /* Noise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7276E6B7224E3D9400DEA117 /* Noise.swift */; };
 		72C7B2752254F7C800FB0C3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D4BABE31C5130A60042ADA0 /* Main.storyboard */; };
 		72C7B2762254F7CF00FB0C3F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D4BABE81C5130A60042ADA0 /* LaunchScreen.storyboard */; };
+		72C7B27D225558A600FB0C3F /* TempiFFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B277225558A500FB0C3F /* TempiFFT.swift */; };
+		72C7B27E225558A600FB0C3F /* SpectralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B278225558A500FB0C3F /* SpectralView.swift */; };
+		72C7B27F225558A600FB0C3F /* TempiAudioInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B279225558A500FB0C3F /* TempiAudioInput.swift */; };
+		72C7B280225558A600FB0C3F /* TempiUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B27A225558A600FB0C3F /* TempiUtilities.swift */; };
+		72C7B281225558A600FB0C3F /* SpectralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B27B225558A600FB0C3F /* SpectralViewController.swift */; };
+		72C7B282225558A600FB0C3F /* TempiDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B27C225558A600FB0C3F /* TempiDebug.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6D4BABDC1C5130A60042ADA0 /* TTBallSensor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TTBallSensor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D4BABDF1C5130A60042ADA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6D4BABE11C5130A60042ADA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6D4BABE11C5130A60042ADA0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		6D4BABE41C5130A60042ADA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6D4BABE61C5130A60042ADA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D4BABE91C5130A60042ADA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6D4BABEB1C5130A60042ADA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7276E6B7224E3D9400DEA117 /* Noise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Noise.swift; sourceTree = "<group>"; };
+		72C7B277225558A500FB0C3F /* TempiFFT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempiFFT.swift; sourceTree = "<group>"; };
+		72C7B278225558A500FB0C3F /* SpectralView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpectralView.swift; sourceTree = "<group>"; };
+		72C7B279225558A500FB0C3F /* TempiAudioInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempiAudioInput.swift; sourceTree = "<group>"; };
+		72C7B27A225558A600FB0C3F /* TempiUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempiUtilities.swift; sourceTree = "<group>"; };
+		72C7B27B225558A600FB0C3F /* SpectralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpectralViewController.swift; sourceTree = "<group>"; };
+		72C7B27C225558A600FB0C3F /* TempiDebug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempiDebug.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,8 +52,14 @@
 		6D43CF4C1C5A0086003EA4EF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				72C7B278225558A500FB0C3F /* SpectralView.swift */,
+				72C7B27B225558A600FB0C3F /* SpectralViewController.swift */,
+				72C7B279225558A500FB0C3F /* TempiAudioInput.swift */,
+				72C7B27C225558A600FB0C3F /* TempiDebug.swift */,
+				72C7B277225558A500FB0C3F /* TempiFFT.swift */,
+				72C7B27A225558A600FB0C3F /* TempiUtilities.swift */,
 				6D4BABDF1C5130A60042ADA0 /* AppDelegate.swift */,
-				6D4BABE11C5130A60042ADA0 /* ViewController.swift */,
+				6D4BABE11C5130A60042ADA0 /* MainViewController.swift */,
 				7276E6B7224E3D9400DEA117 /* Noise.swift */,
 			);
 			name = Sources;
@@ -172,8 +190,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D4BABE21C5130A60042ADA0 /* ViewController.swift in Sources */,
+				72C7B27D225558A600FB0C3F /* TempiFFT.swift in Sources */,
+				6D4BABE21C5130A60042ADA0 /* MainViewController.swift in Sources */,
+				72C7B27E225558A600FB0C3F /* SpectralView.swift in Sources */,
+				72C7B27F225558A600FB0C3F /* TempiAudioInput.swift in Sources */,
+				72C7B281225558A600FB0C3F /* SpectralViewController.swift in Sources */,
+				72C7B280225558A600FB0C3F /* TempiUtilities.swift in Sources */,
 				7276E6B8224E3D9400DEA117 /* Noise.swift in Sources */,
+				72C7B282225558A600FB0C3F /* TempiDebug.swift in Sources */,
 				6D4BABE01C5130A60042ADA0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
