@@ -15,36 +15,59 @@ class Noise {
     var gyroData = Coordinates()
     var magnetometerData = Coordinates()
     
-    @objc public func calibrateSensitivity() {
-        
-        print("noise.magnetometerData.y.sensitivity", magnetometerData.y.sensitivity)
-        
-        // calibrating accelerometer
-        accelerometerData.x.min -= accelerometerData.x.sensitivity
-        accelerometerData.x.max += accelerometerData.x.sensitivity
-        accelerometerData.y.min -= accelerometerData.y.sensitivity
-        accelerometerData.y.max += accelerometerData.y.sensitivity
-        accelerometerData.z.min -= accelerometerData.z.sensitivity
-        accelerometerData.z.max += accelerometerData.z.sensitivity
-        
-        // calibrating gyro
-        gyroData.x.min -= gyroData.x.sensitivity
-        gyroData.x.max += gyroData.x.sensitivity
-        gyroData.y.min -= gyroData.y.sensitivity
-        gyroData.y.max += gyroData.y.sensitivity
-        gyroData.z.min -= gyroData.z.sensitivity
-        gyroData.z.max += gyroData.z.sensitivity
-        
-        // calibrating magnetometer
-        magnetometerData.x.min -= magnetometerData.x.sensitivity
-        magnetometerData.x.max += magnetometerData.x.sensitivity
-        magnetometerData.y.min -= magnetometerData.y.sensitivity
-        magnetometerData.y.max += magnetometerData.y.sensitivity
-        magnetometerData.z.min -= magnetometerData.z.sensitivity
-        magnetometerData.z.max += magnetometerData.z.sensitivity
+    func saveNoiseMinMax(_ noise: Noise) {
+        // saving accelerometer min/max values
+        accelerometerData.x.min = noise.accelerometerData.x.min
+        accelerometerData.x.max = noise.accelerometerData.x.max
+        accelerometerData.y.min = noise.accelerometerData.y.min
+        accelerometerData.y.max = noise.accelerometerData.y.max
+        accelerometerData.z.min = noise.accelerometerData.z.min
+        accelerometerData.z.max = noise.accelerometerData.z.max
+        // saving gyro min/max values
+        gyroData.x.min = noise.gyroData.x.min
+        gyroData.x.max = noise.gyroData.x.max
+        gyroData.y.min = noise.gyroData.y.min
+        gyroData.y.max = noise.gyroData.y.max
+        gyroData.z.min = noise.gyroData.z.min
+        gyroData.z.max = noise.gyroData.z.max
+        // saving magnetometer min/max values
+        magnetometerData.x.min = noise.magnetometerData.x.min
+        magnetometerData.x.max = noise.magnetometerData.x.max
+        magnetometerData.y.min = noise.magnetometerData.y.min
+        magnetometerData.y.max = noise.magnetometerData.y.max
+        magnetometerData.z.min = noise.magnetometerData.z.min
+        magnetometerData.z.max = noise.magnetometerData.z.max
     }
     
-    @objc public func captureMinMax(sensor: String, x: Double, y: Double, z: Double) {
+    func areNewLevelsDetected(_ noise: Noise) -> Bool {
+        let accelerometerMinMaxCaptured =
+            noise.accelerometerData.x.min < accelerometerData.x.min ||
+            noise.accelerometerData.x.max > accelerometerData.x.max ||
+            noise.accelerometerData.y.min < accelerometerData.y.min ||
+            noise.accelerometerData.y.max > accelerometerData.y.max ||
+            noise.accelerometerData.z.min < accelerometerData.z.min ||
+            noise.accelerometerData.z.max > accelerometerData.z.max
+        
+        let gyroMinMaxCaptured =
+            noise.gyroData.x.min < gyroData.x.min ||
+                noise.gyroData.x.max > gyroData.x.max ||
+                noise.gyroData.y.min < gyroData.y.min ||
+                noise.gyroData.y.max > gyroData.y.max ||
+                noise.gyroData.z.min < gyroData.z.min ||
+                noise.gyroData.z.max > gyroData.z.max
+        
+        let magnetometerMinMaxCaptured =
+            noise.magnetometerData.x.min < magnetometerData.x.min ||
+                noise.magnetometerData.x.max > magnetometerData.x.max ||
+                noise.magnetometerData.y.min < magnetometerData.y.min ||
+                noise.magnetometerData.y.max > magnetometerData.y.max ||
+                noise.magnetometerData.z.min < magnetometerData.z.min ||
+                noise.magnetometerData.z.max > magnetometerData.z.max
+        
+        return accelerometerMinMaxCaptured || gyroMinMaxCaptured || magnetometerMinMaxCaptured
+    }
+    
+    public func captureMinMax(sensor: String, x: Double, y: Double, z: Double) {
         if sensor == "accelerometer" {
             self.accelerometerMinMax(x: x, y: y, z: z)
         }
@@ -59,7 +82,7 @@ class Noise {
         }
     }
     
-    @objc private func accelerometerMinMax(x: Double, y: Double, z: Double) {
+    private func accelerometerMinMax(x: Double, y: Double, z: Double) {
         // capturing x limits
         if x < accelerometerData.x.min {
             accelerometerData.x.min = x
@@ -83,7 +106,7 @@ class Noise {
         }
     }
     
-    @objc private func gyroMinMax(x: Double, y: Double, z: Double) {
+    private func gyroMinMax(x: Double, y: Double, z: Double) {
         // capturing x limits
         if x < gyroData.x.min {
             gyroData.x.min = x
@@ -107,7 +130,7 @@ class Noise {
         }
     }
     
-    @objc private func magnetometerMinMax(x: Double, y: Double, z: Double) {
+    private func magnetometerMinMax(x: Double, y: Double, z: Double) {
         // capturing x limits
         if x < magnetometerData.x.min {
             magnetometerData.x.min = x
@@ -141,5 +164,4 @@ struct Coordinates {
 struct Limits {
     var min = VERY_BIG_NUMBER
     var max = VERY_SMALL_NUMBER
-    var sensitivity = 0.01
 }
