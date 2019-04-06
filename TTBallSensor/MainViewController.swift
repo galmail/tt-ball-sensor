@@ -43,6 +43,12 @@ class MainViewController: UIViewController {
     }
     
     func showLabel(_ label: MUILabel!, _ message: String?) {
+        DispatchQueue.main.async {
+            self._showLabel(label, message)
+        }
+    }
+    
+    func _showLabel(_ label: MUILabel!, _ message: String?) {
         if message != nil {
             label.text = message
             label.lastTimeChanged = NSDate()
@@ -94,8 +100,22 @@ class MainViewController: UIViewController {
     }
     
     //MARK: Actions
-    
+    var stopDetectBounceBtnEnabled = false
     @IBAction func detectBounce(_ sender: UIButton) {
+        if stopDetectBounceBtnEnabled {
+//            self.detectSoundTimer.invalidate()
+            stopDetectBounceBtnEnabled = false
+            sender.setTitle("Detect Bounce", for: .normal)
+        }
+        else {
+            stopDetectBounceBtnEnabled = true
+            sender.setTitle("Stop Detect Bounce", for: .normal)
+//            self.detectSoundTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(MainViewController.detectSound), userInfo: nil, repeats: true)
+//
+            
+        }
+        
+        
         // 1. subscribe to both sound and motion detectors
         // 2. if both are true during a short timeframe (~50ms) then show 'bounce detected'
         
@@ -105,7 +125,7 @@ class MainViewController: UIViewController {
     var stopListenForBounceBtnEnabled = false
     @IBAction func listenForBounce(_ sender: UIButton) {
         if stopListenForBounceBtnEnabled {
-            self.detectSoundTimer.invalidate()
+//            self.detectSoundTimer.invalidate()
             stopDetectMotionBtnEnabled = false
             bounceSoundLabel.text = "stopped listening for bounce"
             sender.setTitle("Listen for Bounce", for: .normal)
@@ -115,11 +135,16 @@ class MainViewController: UIViewController {
             stopListenForBounceBtnEnabled = true
             bounceSoundLabel.text = "listening for bounce"
             sender.setTitle("Stop Listen for Bounce", for: .normal)
-            self.detectSoundTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(MainViewController.detectSound), userInfo: nil, repeats: true)
+//            self.detectSoundTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(MainViewController.detectSound), userInfo: nil, repeats: true)
             let bounceSoundDetectedCallback: BounceSoundDetectedCallback = { (bouncedOnTable) -> Void in
-                self.ballSoundBounced = bouncedOnTable
+//                self.ballSoundBounced = bouncedOnTable
+                if bouncedOnTable {
+                    self.showLabel(self.bounceSoundLabel, "sounds like a bounce")
+                } else {
+                    self.showLabel(self.bounceSoundLabel, nil)
+                }
             }
-            bounceSound.startListening(bounceSoundDetectedCallback)
+            self.bounceSound.startListening(bounceSoundDetectedCallback)
         }
     }
     
