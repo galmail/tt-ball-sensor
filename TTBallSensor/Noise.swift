@@ -1,7 +1,6 @@
 //
 //  Noise.swift
 //
-//  Based on the CoreMotion library created by Maxim Bilan on 21/01/2016.
 //  Copyright © 2019 Gal Dubitski. All rights reserved.
 //
 

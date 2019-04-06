@@ -19,6 +19,8 @@
 		72C7B280225558A600FB0C3F /* TempiUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B27A225558A600FB0C3F /* TempiUtilities.swift */; };
 		72C7B281225558A600FB0C3F /* SpectralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B27B225558A600FB0C3F /* SpectralViewController.swift */; };
 		72C7B282225558A600FB0C3F /* TempiDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B27C225558A600FB0C3F /* TempiDebug.swift */; };
+		72C7B2842258F0BB00FB0C3F /* BounceMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B2832258F0BB00FB0C3F /* BounceMotion.swift */; };
+		72C7B2862258F21300FB0C3F /* BounceSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C7B2852258F21300FB0C3F /* BounceSound.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		72C7B27A225558A600FB0C3F /* TempiUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempiUtilities.swift; sourceTree = "<group>"; };
 		72C7B27B225558A600FB0C3F /* SpectralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpectralViewController.swift; sourceTree = "<group>"; };
 		72C7B27C225558A600FB0C3F /* TempiDebug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempiDebug.swift; sourceTree = "<group>"; };
+		72C7B2832258F0BB00FB0C3F /* BounceMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceMotion.swift; sourceTree = "<group>"; };
+		72C7B2852258F21300FB0C3F /* BounceSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceSound.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,8 @@
 				6D4BABDF1C5130A60042ADA0 /* AppDelegate.swift */,
 				6D4BABE11C5130A60042ADA0 /* MainViewController.swift */,
 				7276E6B7224E3D9400DEA117 /* Noise.swift */,
+				72C7B2832258F0BB00FB0C3F /* BounceMotion.swift */,
+				72C7B2852258F21300FB0C3F /* BounceSound.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -191,6 +197,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72C7B27D225558A600FB0C3F /* TempiFFT.swift in Sources */,
+				72C7B2842258F0BB00FB0C3F /* BounceMotion.swift in Sources */,
 				6D4BABE21C5130A60042ADA0 /* MainViewController.swift in Sources */,
 				72C7B27E225558A600FB0C3F /* SpectralView.swift in Sources */,
 				72C7B27F225558A600FB0C3F /* TempiAudioInput.swift in Sources */,
@@ -199,6 +206,7 @@
 				7276E6B8224E3D9400DEA117 /* Noise.swift in Sources */,
 				72C7B282225558A600FB0C3F /* TempiDebug.swift in Sources */,
 				6D4BABE01C5130A60042ADA0 /* AppDelegate.swift in Sources */,
+				72C7B2862258F21300FB0C3F /* BounceSound.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
