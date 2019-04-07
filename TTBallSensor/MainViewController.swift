@@ -20,6 +20,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var noiseFilterLabel: MUILabel!
     @IBOutlet weak var detectMotionLabel: MUILabel!
     @IBOutlet weak var bounceSoundLabel: MUILabel!
+    @IBOutlet weak var numberOfBouncesLabel: MUILabel!
     
 	var filterNoiseTimer: Timer!
     var detectMotionTimer: Timer!
@@ -37,6 +38,7 @@ class MainViewController: UIViewController {
         detectMotionLabel.defaultText = "No movement"
         noiseFilterLabel.defaultText = "No noise"
         bounceSoundLabel.defaultText = "No sound"
+        numberOfBouncesLabel.defaultText = "No bounces"
         bounceMotion.startSensors()
 	}
     
@@ -93,8 +95,16 @@ class MainViewController: UIViewController {
     let BOUNCE_TIMEFRAME = 0.05 // 50ms
     var lastTimeMotionDetected: NSDate?
     var lastTimeSoundDetected: NSDate?
-    
+    var lastTimeBounceDetected: NSDate?
+    var numberOfBouncesDetected = 0
     func detectBounce(_ sensor: String, _ bounced: Bool) {
+        if lastTimeBounceDetected != nil {
+            let lastTimeBounceDetectedInterval = abs(lastTimeBounceDetected!.timeIntervalSinceNow)
+            if lastTimeBounceDetectedInterval < BOUNCE_TIMEFRAME {
+                // bounce already detected during this timeframe, therefore we ignore...
+                return
+            }
+        }
         if sensor == "motion" && bounced {
             lastTimeMotionDetected = NSDate()
         }
@@ -106,6 +116,8 @@ class MainViewController: UIViewController {
         let lastTimeMotionDetectedInterval = abs(lastTimeMotionDetected!.timeIntervalSinceNow)
         let lastTimeSoundDetectedInterval = abs(lastTimeSoundDetected!.timeIntervalSinceNow)
         if lastTimeMotionDetectedInterval < BOUNCE_TIMEFRAME && lastTimeSoundDetectedInterval < BOUNCE_TIMEFRAME {
+            lastTimeBounceDetected = NSDate()
+            numberOfBouncesDetected += 1
             if showBounceOnScreen {
                 self.blinkScreen(true)
             }
@@ -154,11 +166,14 @@ class MainViewController: UIViewController {
             stopDetectBounceBtnEnabled = false
             sender.setTitle("Detect Bounce", for: .normal)
             showBounceOnScreen = false
+            self.showLabel(self.numberOfBouncesLabel, "\(self.numberOfBouncesDetected) Bounces")
         }
         else {
             stopDetectBounceBtnEnabled = true
             sender.setTitle("Stop Detect Bounce", for: .normal)
             showBounceOnScreen = true
+            numberOfBouncesDetected = 0
+            self.showLabel(self.numberOfBouncesLabel, "Counting Bounces...")
         }
     }
     
@@ -175,11 +190,11 @@ class MainViewController: UIViewController {
             bounceSoundLabel.text = "listening for bounce"
             sender.setTitle("Stop Listen for Bounce", for: .normal)
             let bounceSoundDetectedCallback: BounceSoundDetectedCallback = { (bouncedOnTable) -> Void in
-                self.detectSoundQueue.async {
-                    self.detectBounce("sound", bouncedOnTable)
-                }
                 if bouncedOnTable {
                     self.showLabel(self.bounceSoundLabel, "sounds like a bounce")
+                    self.detectSoundQueue.async {
+                        self.detectBounce("sound", bouncedOnTable)
+                    }
                 } else {
                     self.showLabel(self.bounceSoundLabel, nil)
                 }
