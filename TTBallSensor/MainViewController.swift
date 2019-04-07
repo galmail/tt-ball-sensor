@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 class MUILabel: UILabel {
     var lastTimeChanged: NSDate?
@@ -22,7 +23,9 @@ class MainViewController: UIViewController {
     
 	var filterNoiseTimer: Timer!
     var detectMotionTimer: Timer!
-    var detectSoundTimer: Timer!
+    
+    let detectMotionQueue = DispatchQueue(label: "detect-motion-queue")
+    let detectSoundQueue = DispatchQueue(label: "detect-sound-queue")
 
     let bounceMotion = BounceMotion()
     let bounceSound = BounceSound()
@@ -42,6 +45,28 @@ class MainViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    func blinkScreen(_ on: Bool) {
+        DispatchQueue.main.async {
+            self._blinkScreen(on)
+        }
+    }
+    
+    // will change screen color for 1sec
+    var lastTimeScreenBlinked: NSDate?
+    func _blinkScreen(_ on: Bool) {
+        if on {
+            view.backgroundColor = UIColor.green
+            lastTimeScreenBlinked = NSDate()
+        }
+        else {
+            if lastTimeScreenBlinked == nil { return }
+            let timeSinceScreenBlinked = abs(lastTimeScreenBlinked!.timeIntervalSinceNow)
+            if timeSinceScreenBlinked > 1 {
+                view.backgroundColor = UIColor.white
+            }
+        }
+    }
+    
     func showLabel(_ label: MUILabel!, _ message: String?) {
         DispatchQueue.main.async {
             self._showLabel(label, message)
@@ -55,25 +80,48 @@ class MainViewController: UIViewController {
         }
         else {
             if label.lastTimeChanged == nil { return }
-            let timePastSinceLastChanged = label.lastTimeChanged!.timeIntervalSinceNow
-            if timePastSinceLastChanged < -1 {
+            let timePastSinceLastChanged = abs(label.lastTimeChanged!.timeIntervalSinceNow)
+            if timePastSinceLastChanged > 1 {
                 label.text = label.defaultText
             }
         }
     }
     
-    var ballSoundBounced = false
-    @objc func detectSound() {
-        if ballSoundBounced {
-            self.showLabel(self.bounceSoundLabel, "sounds like a bounce")
+    // 1. subscribe to both sound and motion detectors
+    // 2. if both are true during a short timeframe (~50ms) then show 'bounce detected'
+    var showBounceOnScreen = false
+    let BOUNCE_TIMEFRAME = 0.05 // 50ms
+    var lastTimeMotionDetected: NSDate?
+    var lastTimeSoundDetected: NSDate?
+    
+    func detectBounce(_ sensor: String, _ bounced: Bool) {
+        if sensor == "motion" && bounced {
+            lastTimeMotionDetected = NSDate()
+        }
+        if sensor == "sound" && bounced {
+            lastTimeSoundDetected = NSDate()
+        }
+        if lastTimeMotionDetected == nil || lastTimeSoundDetected == nil { return }
+        // now lets check
+        let lastTimeMotionDetectedInterval = abs(lastTimeMotionDetected!.timeIntervalSinceNow)
+        let lastTimeSoundDetectedInterval = abs(lastTimeSoundDetected!.timeIntervalSinceNow)
+        if lastTimeMotionDetectedInterval < BOUNCE_TIMEFRAME && lastTimeSoundDetectedInterval < BOUNCE_TIMEFRAME {
+            if showBounceOnScreen {
+                self.blinkScreen(true)
+            }
         }
         else {
-            self.showLabel(self.bounceSoundLabel, nil)
+            if showBounceOnScreen {
+                self.blinkScreen(false)
+            }
         }
     }
     
     @objc func detectMovement() {
         let sensorDetected = bounceMotion.detectMotion()
+        detectMotionQueue.async {
+            self.detectBounce("motion", sensorDetected != nil)
+        }
         self.showLabel(self.detectMotionLabel, sensorDetected)
     }
     
@@ -103,29 +151,20 @@ class MainViewController: UIViewController {
     var stopDetectBounceBtnEnabled = false
     @IBAction func detectBounce(_ sender: UIButton) {
         if stopDetectBounceBtnEnabled {
-//            self.detectSoundTimer.invalidate()
             stopDetectBounceBtnEnabled = false
             sender.setTitle("Detect Bounce", for: .normal)
+            showBounceOnScreen = false
         }
         else {
             stopDetectBounceBtnEnabled = true
             sender.setTitle("Stop Detect Bounce", for: .normal)
-//            self.detectSoundTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(MainViewController.detectSound), userInfo: nil, repeats: true)
-//
-            
+            showBounceOnScreen = true
         }
-        
-        
-        // 1. subscribe to both sound and motion detectors
-        // 2. if both are true during a short timeframe (~50ms) then show 'bounce detected'
-        
-        
     }
     
     var stopListenForBounceBtnEnabled = false
     @IBAction func listenForBounce(_ sender: UIButton) {
         if stopListenForBounceBtnEnabled {
-//            self.detectSoundTimer.invalidate()
             stopDetectMotionBtnEnabled = false
             bounceSoundLabel.text = "stopped listening for bounce"
             sender.setTitle("Listen for Bounce", for: .normal)
@@ -135,9 +174,10 @@ class MainViewController: UIViewController {
             stopListenForBounceBtnEnabled = true
             bounceSoundLabel.text = "listening for bounce"
             sender.setTitle("Stop Listen for Bounce", for: .normal)
-//            self.detectSoundTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(MainViewController.detectSound), userInfo: nil, repeats: true)
             let bounceSoundDetectedCallback: BounceSoundDetectedCallback = { (bouncedOnTable) -> Void in
-//                self.ballSoundBounced = bouncedOnTable
+                self.detectSoundQueue.async {
+                    self.detectBounce("sound", bouncedOnTable)
+                }
                 if bouncedOnTable {
                     self.showLabel(self.bounceSoundLabel, "sounds like a bounce")
                 } else {
@@ -160,9 +200,7 @@ class MainViewController: UIViewController {
             noiseFilterLabel.text = "filtering noise..."
             sender.setTitle("Stop Filter Noise", for: .normal)
             stopFilterNoiseBtnEnabled = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.filterNoiseTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(MainViewController.noiseFiltering), userInfo: nil, repeats: true)
-            }
+            self.filterNoiseTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(MainViewController.noiseFiltering), userInfo: nil, repeats: true)
         }
     }
 
