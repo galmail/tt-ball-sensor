@@ -92,6 +92,7 @@
                     <connections>
                         <outlet property="bounceSoundLabel" destination="AqY-5F-8x9" id="gNU-xf-kZK"/>
                         <outlet property="detectMotionLabel" destination="Tbd-Lh-7q8" id="Chy-UC-QuI"/>
+                        <outlet property="filterNoiseButton" destination="47q-H6-3Xl" id="Ptc-IL-e2t"/>
                         <outlet property="noiseFilterLabel" destination="2QZ-xw-BDO" id="rPv-MV-aLD"/>
                         <outlet property="numberOfBouncesLabel" destination="W5k-uI-vCI" id="LJ8-kc-bwB"/>
                     </connections>

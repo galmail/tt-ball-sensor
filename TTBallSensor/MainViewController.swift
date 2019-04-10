@@ -17,6 +17,7 @@ class MainViewController: UIViewController {
     
     //MARK: Properties
     
+    @IBOutlet weak var filterNoiseButton: UIButton!
     @IBOutlet weak var noiseFilterLabel: MUILabel!
     @IBOutlet weak var detectMotionLabel: MUILabel!
     @IBOutlet weak var bounceSoundLabel: MUILabel!
@@ -39,6 +40,14 @@ class MainViewController: UIViewController {
         noiseFilterLabel.defaultText = "No noise"
         bounceSoundLabel.defaultText = "No sound"
         numberOfBouncesLabel.defaultText = "No bounces"
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(filterNoiseNormalTap(_:)))
+        tapGesture.numberOfTapsRequired = 1
+        filterNoiseButton.addGestureRecognizer(tapGesture)
+        
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(filterNoiseLongTap(_:)))
+        filterNoiseButton.addGestureRecognizer(longGesture)
+        
         bounceMotion.startSensors()
 	}
     
@@ -204,20 +213,51 @@ class MainViewController: UIViewController {
     }
     
     var stopFilterNoiseBtnEnabled = false
-    @IBAction func filterNoise(_ sender: UIButton) {
+    @objc func filterNoiseNormalTap(_ sender: UIGestureRecognizer){
+//        print("Filter Noise Normal tap")
         if stopFilterNoiseBtnEnabled {
             self.filterNoiseTimer.invalidate()
             noiseFilterLabel.text = "noise filtering stopped"
-            sender.setTitle("Filter Noise", for: .normal)
+            filterNoiseButton.setTitle("Filter Noise", for: .normal)
             stopFilterNoiseBtnEnabled = false
+            bounceMotion.saveNoiseLimits()
         }
         else {
             noiseFilterLabel.text = "filtering noise..."
-            sender.setTitle("Stop Filter Noise", for: .normal)
+            filterNoiseButton.setTitle("Stop Filter Noise", for: .normal)
             stopFilterNoiseBtnEnabled = true
             self.filterNoiseTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(MainViewController.noiseFiltering), userInfo: nil, repeats: true)
         }
     }
+    
+    @objc func filterNoiseLongTap(_ sender: UIGestureRecognizer){
+//        print("Filter Noise Long tap")
+        if sender.state == .ended {
+            print("UIGestureRecognizerStateEnded")
+            // clearing default noise values
+            bounceMotion.clearNoiseLimits()
+        }
+        else if sender.state == .began {
+//            print("UIGestureRecognizerStateBegan.")
+        }
+    }
+    
+//    var stopFilterNoiseBtnEnabled = false
+//    @IBAction func filterNoise(_ sender: UIButton) {
+//        if stopFilterNoiseBtnEnabled {
+//            self.filterNoiseTimer.invalidate()
+//            noiseFilterLabel.text = "noise filtering stopped"
+//            sender.setTitle("Filter Noise", for: .normal)
+//            stopFilterNoiseBtnEnabled = false
+//            bounceMotion.saveNoiseLimits()
+//        }
+//        else {
+//            noiseFilterLabel.text = "filtering noise..."
+//            sender.setTitle("Stop Filter Noise", for: .normal)
+//            stopFilterNoiseBtnEnabled = true
+//            self.filterNoiseTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(MainViewController.noiseFiltering), userInfo: nil, repeats: true)
+//        }
+//    }
 
     var stopDetectMotionBtnEnabled = false
     @IBAction func detectMotion(_ sender: UIButton) {

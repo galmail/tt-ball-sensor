@@ -13,14 +13,24 @@ import CoreMotion
 class BounceMotion {
     
     let motionManager = CMMotionManager()
-    let noise = Noise()
-    let noiseSnapshot = Noise()
+    let noise = Noise(restoreDefaults: true)
+    let noiseSnapshot = Noise(restoreDefaults: false)
     
     func startSensors() {
         motionManager.startAccelerometerUpdates()
         motionManager.startGyroUpdates()
         motionManager.startMagnetometerUpdates()
         motionManager.startDeviceMotionUpdates()
+    }
+    
+    func clearNoiseLimits() {
+        noise.clearLimits()
+        noise.printLimits()
+    }
+    
+    func saveNoiseLimits() {
+        noise.saveLimits()
+        noise.printLimits()
     }
     
     func detectMotion() -> String? {
