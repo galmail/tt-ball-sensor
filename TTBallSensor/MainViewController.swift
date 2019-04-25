@@ -7,6 +7,7 @@
 
 import UIKit
 import Foundation
+import AVFoundation
 
 class MUILabel: UILabel {
     var lastTimeChanged: NSDate?
@@ -31,6 +32,8 @@ class MainViewController: UIViewController {
 
     let bounceMotion = BounceMotion()
     let bounceSound = BounceSound()
+    
+    var player: AVAudioPlayer?
 
     override func viewDidLoad() {
 		super.viewDidLoad()
@@ -147,14 +150,17 @@ class MainViewController: UIViewController {
     }
     
     var filteringNoise = false
-    @objc func noiseFiltering() {
-        if filteringNoise { return }
+    var timesWithoutFilteringNoise = 0
+    @objc func noiseFiltering() -> Bool {
+        var noiseWasDetected = false
+        if filteringNoise { return true } // still filtering so we haven't finished
         filteringNoise = true
         var timesWithoutNoise = 0
         print("started noise filtering!")
         while timesWithoutNoise < 100000 {
             let noiseDetected = bounceMotion.captureNoise()
             if noiseDetected {
+                noiseWasDetected = true
                 print("timesWithoutNoise", timesWithoutNoise)
                 self.showLabel(self.noiseFilterLabel, "More noise detected")
                 timesWithoutNoise = 0
@@ -166,6 +172,21 @@ class MainViewController: UIViewController {
         filteringNoise = false
         self.showLabel(self.noiseFilterLabel, nil)
         print("finished noise filtering!")
+        if !noiseWasDetected {
+            timesWithoutFilteringNoise += 1
+            if timesWithoutFilteringNoise == 20 {
+                // we are done, play sound and stop filtering!
+                self.filterNoiseTimer.invalidate()
+                noiseFilterLabel.text = "noise filtering stopped"
+                filterNoiseButton.setTitle("Filter Noise", for: .normal)
+                stopFilterNoiseBtnEnabled = false
+                bounceMotion.saveNoiseLimits()
+                playSound()
+            }
+        } else {
+            timesWithoutFilteringNoise = 0
+        }
+        return noiseWasDetected
     }
     
     //MARK: Actions
@@ -272,6 +293,38 @@ class MainViewController: UIViewController {
             sender.setTitle("Stop Detect Motion", for: .normal)
             stopDetectMotionBtnEnabled = true
             self.detectMotionTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(MainViewController.detectMovement), userInfo: nil, repeats: true)
+        }
+    }
+    
+    
+    
+    func playSound() {
+        print("playSound()")
+        guard let url = Bundle.main.url(forResource: "dora_success_tone", withExtension: "mp3") else {
+            print("cant find dora_success_tone.mp3")
+            return
+        }
+        
+        do {
+            if #available(iOS 10, *) {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            } else {
+                try AVAudioSession.sharedInstance().setCategory(.playback)
+            }
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            
+            /* iOS 10 and earlier require the following line:
+             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
+            
+            guard let player = player else { return }
+            
+            player.play()
+            
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
 

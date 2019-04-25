@@ -10,6 +10,7 @@
 		6D4BABE01C5130A60042ADA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4BABDF1C5130A60042ADA0 /* AppDelegate.swift */; };
 		6D4BABE21C5130A60042ADA0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4BABE11C5130A60042ADA0 /* MainViewController.swift */; };
 		6D4BABE71C5130A60042ADA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D4BABE61C5130A60042ADA0 /* Assets.xcassets */; };
+		722CB99622725B500049227E /* dora_success_tone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 722CB99522725B500049227E /* dora_success_tone.mp3 */; };
 		7276E6B8224E3D9400DEA117 /* Noise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7276E6B7224E3D9400DEA117 /* Noise.swift */; };
 		72C7B2752254F7C800FB0C3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D4BABE31C5130A60042ADA0 /* Main.storyboard */; };
 		72C7B2762254F7CF00FB0C3F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D4BABE81C5130A60042ADA0 /* LaunchScreen.storyboard */; };
@@ -31,6 +32,7 @@
 		6D4BABE61C5130A60042ADA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D4BABE91C5130A60042ADA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6D4BABEB1C5130A60042ADA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		722CB99522725B500049227E /* dora_success_tone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dora_success_tone.mp3; sourceTree = "<group>"; };
 		7276E6B7224E3D9400DEA117 /* Noise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Noise.swift; sourceTree = "<group>"; };
 		72C7B277225558A500FB0C3F /* TempiFFT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempiFFT.swift; sourceTree = "<group>"; };
 		72C7B278225558A500FB0C3F /* SpectralView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpectralView.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		6D43CF4F1C5A00A5003EA4EF /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				722CB99522725B500049227E /* dora_success_tone.mp3 */,
 				6D4BABE61C5130A60042ADA0 /* Assets.xcassets */,
 			);
 			name = Assets;
@@ -185,6 +188,7 @@
 			files = (
 				72C7B2762254F7CF00FB0C3F /* LaunchScreen.storyboard in Resources */,
 				72C7B2752254F7C800FB0C3F /* Main.storyboard in Resources */,
+				722CB99622725B500049227E /* dora_success_tone.mp3 in Resources */,
 				6D4BABE71C5130A60042ADA0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
